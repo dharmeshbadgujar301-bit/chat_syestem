@@ -42,14 +42,14 @@ export default function ChatHeader({ contact }: ChatHeaderProps) {
         </div>
       </div>
       
-      <div className="flex items-center gap-2 sm:gap-4 text-gray-500">
-        <button className="p-2.5 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all hidden sm:block">
+      <div className="flex items-center gap-1 sm:gap-4 text-gray-500">
+        <button className="p-2 sm:p-2.5 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all flex">
           <Video className="w-5 h-5" />
         </button>
-        <button className="p-2.5 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all hidden sm:block">
+        <button className="p-2 sm:p-2.5 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all flex">
           <Phone className="w-5 h-5" />
         </button>
-        <button className="p-2.5 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all">
+        <button className="p-2 sm:p-2.5 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-all flex">
           <MoreVertical className="w-5 h-5" />
         </button>
       </div>

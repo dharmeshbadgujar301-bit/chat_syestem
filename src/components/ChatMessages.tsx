@@ -1,8 +1,10 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import { useChatStore } from '@/store/chatStore';
 import MessageBubble from './MessageBubble';
+import { format, isToday, isYesterday } from 'date-fns';
+import { Message } from '@/types';
 
 interface ChatMessagesProps {
   contactId: string;
@@ -13,6 +15,31 @@ export default function ChatMessages({ contactId }: ChatMessagesProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   const messages = chatHistory[contactId] || [];
+
+  const groupedMessages = useMemo(() => {
+    const groups: { dateLabel: string, messages: Message[] }[] = [];
+    
+    messages.forEach(msg => {
+      const date = new Date(msg.timestamp);
+      let dateLabel = '';
+      if (isToday(date)) {
+        dateLabel = 'Today';
+      } else if (isYesterday(date)) {
+        dateLabel = 'Yesterday';
+      } else {
+        dateLabel = format(date, 'MMMM d, yyyy');
+      }
+
+      const lastGroup = groups[groups.length - 1];
+      if (lastGroup && lastGroup.dateLabel === dateLabel) {
+        lastGroup.messages.push(msg);
+      } else {
+        groups.push({ dateLabel, messages: [msg] });
+      }
+    });
+
+    return groups;
+  }, [messages]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -32,13 +59,17 @@ export default function ChatMessages({ contactId }: ChatMessagesProps) {
         </div>
       ) : (
         <div className="space-y-4">
-          <div className="flex justify-center mb-6">
-            <span className="bg-white/60 text-gray-500 text-xs py-1 px-3 rounded-lg shadow-sm backdrop-blur-sm">
-              Today
-            </span>
-          </div>
-          {messages.map((msg) => (
-            <MessageBubble key={msg.id} message={msg} />
+          {groupedMessages.map((group, groupIdx) => (
+            <React.Fragment key={group.dateLabel + groupIdx}>
+              <div className="flex justify-center mb-6 mt-4 first:mt-0">
+                <span className="bg-white/60 text-gray-500 text-xs py-1 px-3 rounded-lg shadow-sm backdrop-blur-sm">
+                  {group.dateLabel}
+                </span>
+              </div>
+              {group.messages.map((msg) => (
+                <MessageBubble key={msg.id} message={msg} />
+              ))}
+            </React.Fragment>
           ))}
           <div ref={messagesEndRef} />
         </div>

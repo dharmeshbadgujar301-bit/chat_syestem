@@ -163,7 +163,7 @@ export default function MessageInput({ contactId }: MessageInputProps) {
       )}
 
       {/* Main Input Bar */}
-      <div className="min-h-[64px] px-4 py-2 flex items-end gap-3 w-full pb-3">
+      <div className="min-h-[64px] px-2 sm:px-4 py-2 flex items-end gap-1.5 sm:gap-3 w-full pb-3">
         
         <button 
           onClick={() => setShowEmoji(!showEmoji)}
@@ -174,7 +174,7 @@ export default function MessageInput({ contactId }: MessageInputProps) {
         
         <button 
           onClick={() => fileInputRef.current?.click()}
-          className="p-2 text-gray-500 hover:text-indigo-600 transition-colors rounded-full hover:bg-gray-200 hidden sm:block mb-1"
+          className="p-2 text-gray-500 hover:text-indigo-600 transition-colors rounded-full hover:bg-gray-200 mb-1 flex-shrink-0"
         >
           <Paperclip className="w-5 h-5" />
         </button>
